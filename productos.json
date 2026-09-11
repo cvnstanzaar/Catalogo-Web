@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "nombre": "Producto de Ejemplo 1",
+        "descripcion": "Esta es una breve descripción del producto para que el cliente sepa de qué se trata.",
+        "precio": 15000,
+        "imagen": "https://via.placeholder.com/300x200?text=Foto+del+Producto"
+    },
+    {
+        "id": 2,
+        "nombre": "Producto de Ejemplo 2",
+        "descripcion": "Material resistente y duradero. Perfecto para uso diario.",
+        "precio": 25990,
+        "imagen": "https://via.placeholder.com/300x200?text=Foto+del+Producto"
+    },
+    {
+        "id": 3,
+        "nombre": "Producto Estrella 3",
+        "descripcion": "El artículo más vendido de nuestra tienda. Calidad garantizada.",
+        "precio": 9990,
+        "imagen": "https://via.placeholder.com/300x200?text=Foto+del+Producto"
+    }
+]
