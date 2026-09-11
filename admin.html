@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Lato', sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; color: #333; }
+        .admin-container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { border-bottom: 2px solid #d4af37; padding-bottom: 10px; margin-top: 0; }
+        .top-bar { display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center; }
+        button { background: #1a1a1a; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; }
+        button:hover { background: #d4af37; }
+        .btn-download { background: #27ae60; font-size: 1.1rem; padding: 12px 20px; }
+        .btn-download:hover { background: #2ecc71; }
+        
+        .product-form { display: grid; gap: 10px; background: #fafafa; padding: 20px; border: 1px solid #ddd; margin-bottom: 20px; border-radius: 4px; }
+        .product-form input, .product-form textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit;}
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; }
+        .btn-delete { background: #e74c3c; padding: 5px 10px; }
+        .btn-delete:hover { background: #c0392b; }
+        
+        .instructions { background: #e8f4f8; padding: 15px; border-left: 4px solid #3498db; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <h1>Administración de Perfumes</h1>
+    
+    <div class="instructions">
+        <strong>¿Cómo funciona esto?</strong> <br>
+        1. Agrega o elimina perfumes aquí abajo.<br>
+        2. Cuando termines, haz clic en el botón verde "Descargar productos.json".<br>
+        3. Reemplaza el archivo <code>productos.json</code> de tu carpeta con el nuevo archivo descargado.<br>
+        4. Abre GitHub Desktop y sube los cambios para que se actualice la página pública.
+    </div>
+
+    <div class="top-bar">
+        <h3>Agregar Nuevo Perfume</h3>
+        <button class="btn-download" onclick="downloadJSON()">⬇️ Descargar productos.json actualizado</button>
+    </div>
+
+    <form class="product-form" id="addForm">
+        <input type="text" id="pNombre" placeholder="Nombre del Perfume (Ej: Dior Sauvage)" required>
+        <textarea id="pDesc" placeholder="Descripción detallada" rows="3" required></textarea>
+        <input type="number" id="pPrecio" placeholder="Precio (Ej: 99990)" required>
+        <input type="url" id="pImagen" placeholder="URL de la imagen (Ej: https://...)" required>
+        <button type="submit">➕ Añadir a la lista</button>
+    </form>
+
+    <h3>Perfumes Actuales</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Cargado por JS -->
+        </tbody>
+    </table>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
