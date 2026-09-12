@@ -1,74 +1,104 @@
-let adminProducts = [];
+// Configuración de Supabase
+const SUPABASE_URL = 'https://ilfwhbecexmjwgpxjtoa.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsZndoYmVjZXhtandncHhqdG9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyMTExNTksImV4cCI6MjEwNDc4NzE1OX0.FIuPuAyc7H555E-vu0Yo5e6uCG20Nw8eGbma09Y4tJ4';
 
-// Cargar productos iniciales (solo al cargar la página)
-async function initAdmin() {
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const tbody = document.getElementById('tableBody');
+const addForm = document.getElementById('addForm');
+const btnSubmit = document.getElementById('btnSubmit');
+
+// Cargar productos directamente desde Supabase
+async function loadAdminProducts() {
     try {
-        const res = await fetch('productos.json');
-        adminProducts = await res.json();
-        renderTable();
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888;">Cargando inventario desde la base de datos...</td></tr>';
+        
+        const { data, error } = await supabaseClient
+            .from('productos')
+            .select('*')
+            .order('id', { ascending: false });
+
+        if (error) throw error;
+        renderAdminTable(data || []);
     } catch (e) {
-        console.error("No se pudo cargar productos.json", e);
+        console.error("Error al cargar productos:", e);
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#c0392b;">Error al conectar con Supabase. Revisa la consola.</td></tr>';
     }
 }
 
-function renderTable() {
-    const tbody = document.getElementById('tableBody');
+// Renderizar tabla
+function renderAdminTable(products) {
     tbody.innerHTML = '';
     
-    adminProducts.forEach(p => {
+    if (products.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888;">No hay perfumes registrados en la base de datos.</td></tr>';
+        return;
+    }
+
+    products.forEach(p => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td>${p.id}</td>
-            <td>${p.nombre}</td>
-            <td>$${p.precio}</td>
+            <td><img src="${p.imagen || 'https://via.placeholder.com/50'}" alt="" class="thumb-img"></td>
+            <td><strong>${p.nombre}</strong><br><small style="color:#777;">${p.descripcion ? p.descripcion.substring(0, 50) + '...' : ''}</small></td>
+            <td style="font-weight:bold;color:#d4af37;">$${Number(p.precio || 0).toLocaleString('es-CL')}</td>
             <td>
-                <button class="btn-delete" onclick="deleteProduct(${p.id})">Borrar</button>
+                <button class="btn-delete" onclick="deleteProduct(${p.id})">🗑️ Eliminar</button>
             </td>
         `;
         tbody.appendChild(tr);
     });
 }
 
-function deleteProduct(id) {
-    if(confirm("¿Seguro que quieres borrar este perfume?")) {
-        adminProducts = adminProducts.filter(p => p.id !== id);
-        renderTable();
+// Eliminar producto en tiempo real
+async function deleteProduct(id) {
+    if (!confirm("¿Estás segura de que deseas eliminar este perfume del catálogo en vivo?")) {
+        return;
+    }
+
+    try {
+        const { error } = await supabaseClient
+            .from('productos')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+        await loadAdminProducts();
+    } catch (e) {
+        alert("Error al eliminar el producto: " + e.message);
     }
 }
 
-document.getElementById('addForm').addEventListener('submit', function(e) {
+// Agregar producto en tiempo real
+addForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    // Generar un nuevo ID (el mayor actual + 1)
-    let newId = 1;
-    if (adminProducts.length > 0) {
-        newId = Math.max(...adminProducts.map(p => p.id)) + 1;
-    }
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = "⏳ Guardando en la nube...";
 
     const newProd = {
-        id: newId,
-        nombre: document.getElementById('pNombre').value,
-        descripcion: document.getElementById('pDesc').value,
+        nombre: document.getElementById('pNombre').value.trim(),
+        descripcion: document.getElementById('pDesc').value.trim(),
         precio: parseInt(document.getElementById('pPrecio').value),
-        imagen: document.getElementById('pImagen').value
+        imagen: document.getElementById('pImagen').value.trim()
     };
 
-    adminProducts.push(newProd);
-    renderTable();
-    this.reset();
+    try {
+        const { error } = await supabaseClient
+            .from('productos')
+            .insert([newProd]);
+
+        if (error) throw error;
+
+        addForm.reset();
+        await loadAdminProducts();
+        alert("¡Perfume guardado con éxito en Supabase y visible en la tienda!");
+    } catch (e) {
+        alert("Error al guardar: " + e.message);
+    } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = "➕ Añadir Perfume a la Tienda";
+    }
 });
 
-// Función para descargar el JSON
-function downloadJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(adminProducts, null, 4));
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", "productos.json");
-    document.body.appendChild(downloadAnchorNode); // requerido para Firefox
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
-    
-    alert("¡Archivo descargado! Ahora reemplázalo en tu carpeta y súbelo a GitHub.");
-}
-
-initAdmin();
+// Inicializar carga
+loadAdminProducts();
