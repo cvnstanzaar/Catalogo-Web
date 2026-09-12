@@ -39,13 +39,16 @@ function renderProducts(products) {
         const card = document.createElement('div');
         card.className = 'product-card';
         
+        const mensajeWhatsApp = `Hola, quisiera consultar por el perfume *${product.nombre}* (Precio: $${Number(product.precio || 0).toLocaleString('es-CL')}). ¿Tienen stock disponible?`;
+        const urlWhatsApp = `https://wa.me/56932600904?text=${encodeURIComponent(mensajeWhatsApp)}`;
+
         card.innerHTML = `
             <img src="${product.imagen || 'https://via.placeholder.com/300x320?text=Perfume'}" alt="${product.nombre}" class="product-image">
             <div class="product-info">
                 <h3 class="product-title">${product.nombre}</h3>
                 <p class="product-desc">${product.descripcion}</p>
                 <div class="product-price">$${Number(product.precio || 0).toLocaleString('es-CL')}</div>
-                <a href="https://wa.me/56900000000?text=Hola,%20me%20interesa%20el%20perfume:%20${encodeURIComponent(product.nombre)}" target="_blank" class="btn-comprar">Comprar por WhatsApp</a>
+                <a href="${urlWhatsApp}" target="_blank" class="btn-comprar">💬 Consultar por WhatsApp</a>
             </div>
         `;
         
