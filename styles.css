@@ -179,30 +179,149 @@ main {
 }
 
 .btn-comprar {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     width: 100%;
-    padding: 12px;
+    padding: 13px 10px;
     background-color: #1a1a1a;
     color: white;
     text-align: center;
     text-decoration: none;
-    font-weight: 400;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-comprar svg {
+    fill: #25D366;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
 }
 
 .btn-comprar:hover {
-    background-color: #d4af37;
+    background-color: #25D366;
+    color: white;
+}
+
+.btn-comprar:hover svg {
+    fill: white;
+    transform: scale(1.15);
 }
 
 footer {
     text-align: center;
-    padding: 40px;
+    padding: 40px 20px;
     background-color: #1a1a1a;
     color: #888;
     margin-top: auto;
     font-size: 0.9rem;
     letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   Responsividad para Teléfonos y Pantallas Pequeñas (Mobile First)
+   ========================================================================== */
+@media (max-width: 768px) {
+    header {
+        padding: 18px 0;
+    }
+
+    .header-container {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+        padding: 0 15px;
+    }
+
+    .logo h1 {
+        font-size: 1.7rem;
+        letter-spacing: 1px;
+    }
+
+    .header-right {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .header-whatsapp {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 18px;
+        font-size: 0.95rem;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+
+    .search-bar input {
+        width: 100%;
+        padding: 12px 18px;
+        font-size: 0.95rem;
+    }
+
+    main {
+        margin: 30px auto;
+        padding: 0 15px;
+    }
+
+    .catalog {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 24px;
+    }
+
+    .product-card {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .product-image {
+        height: 290px;
+    }
+
+    .product-info {
+        padding: 20px 15px;
+    }
+
+    .product-title {
+        font-size: 1.15rem;
+    }
+
+    .product-desc {
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+    }
+
+    .product-price {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .floating-whatsapp {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+    }
+}
+
+@media (max-width: 480px) {
+    .catalog {
+        grid-template-columns: 1fr; /* 1 sola columna perfecta en pantallas chicas */
+        gap: 20px;
+    }
+
+    .product-image {
+        height: 320px;
+    }
+
+    .btn-comprar {
+        padding: 14px 10px;
+        font-size: 0.95rem;
+    }
 }
