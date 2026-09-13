@@ -7,6 +7,11 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 const tbody = document.getElementById('tableBody');
 const addForm = document.getElementById('addForm');
 const btnSubmit = document.getElementById('btnSubmit');
+const btnCancelEdit = document.getElementById('btnCancelEdit');
+const formTitle = document.getElementById('formTitle');
+const editProductId = document.getElementById('editProductId');
+
+let allProductsList = [];
 
 // Cargar productos directamente desde Supabase
 async function loadAdminProducts() {
@@ -19,7 +24,8 @@ async function loadAdminProducts() {
             .order('id', { ascending: false });
 
         if (error) throw error;
-        renderAdminTable(data || []);
+        allProductsList = data || [];
+        renderAdminTable(allProductsList);
     } catch (e) {
         console.error("Error al cargar productos:", e);
         tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#c0392b;">Error al conectar con Supabase. Revisa la consola.</td></tr>';
@@ -42,11 +48,42 @@ function renderAdminTable(products) {
             <td><strong>${p.nombre}</strong><br><small style="color:#777;">${p.descripcion ? p.descripcion.substring(0, 50) + '...' : ''}</small></td>
             <td style="font-weight:bold;color:#d4af37;">$${Number(p.precio || 0).toLocaleString('es-CL')}</td>
             <td>
-                <button class="btn-delete" onclick="deleteProduct(${p.id})">🗑️ Eliminar</button>
+                <div class="action-buttons">
+                    <button class="btn-edit" onclick="startEdit(${p.id})">✏️ Editar</button>
+                    <button class="btn-delete" onclick="deleteProduct(${p.id})">🗑️ Eliminar</button>
+                </div>
             </td>
         `;
         tbody.appendChild(tr);
     });
+}
+
+// Iniciar edición de un producto
+function startEdit(id) {
+    const prod = allProductsList.find(p => p.id === id);
+    if (!prod) return;
+
+    editProductId.value = prod.id;
+    document.getElementById('pNombre').value = prod.nombre || '';
+    document.getElementById('pPrecio').value = prod.precio || 0;
+    document.getElementById('pImagen').value = prod.imagen || '';
+    document.getElementById('pDesc').value = prod.descripcion || '';
+
+    formTitle.innerHTML = `✏️ Editando: <span style="color:#d4af37;">${prod.nombre}</span>`;
+    btnSubmit.textContent = "💾 Guardar Cambios";
+    btnCancelEdit.style.display = "inline-block";
+
+    // Desplazar suavemente hacia el formulario
+    addForm.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Cancelar edición
+function cancelEdit() {
+    editProductId.value = '';
+    addForm.reset();
+    formTitle.innerHTML = "➕ Añadir Nuevo Perfume";
+    btnSubmit.textContent = "➕ Añadir Perfume a la Tienda";
+    btnCancelEdit.style.display = "none";
 }
 
 // Eliminar producto en tiempo real
@@ -62,20 +99,25 @@ async function deleteProduct(id) {
             .eq('id', id);
 
         if (error) throw error;
+        
+        if (editProductId.value == id) {
+            cancelEdit();
+        }
         await loadAdminProducts();
     } catch (e) {
         alert("Error al eliminar el producto: " + e.message);
     }
 }
 
-// Agregar producto en tiempo real
+// Guardar o Actualizar producto
 addForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     
+    const editingId = editProductId.value;
     btnSubmit.disabled = true;
-    btnSubmit.textContent = "⏳ Guardando en la nube...";
+    btnSubmit.textContent = editingId ? "⏳ Guardando cambios..." : "⏳ Añadiendo perfume...";
 
-    const newProd = {
+    const prodData = {
         nombre: document.getElementById('pNombre').value.trim(),
         descripcion: document.getElementById('pDesc').value.trim(),
         precio: parseInt(document.getElementById('pPrecio').value),
@@ -83,20 +125,46 @@ addForm.addEventListener('submit', async function(e) {
     };
 
     try {
-        const { error } = await supabaseClient
-            .from('productos')
-            .insert([newProd]);
+        if (editingId) {
+            // MODO EDICIÓN
+            const { data, error } = await supabaseClient
+                .from('productos')
+                .update(prodData)
+                .eq('id', parseInt(editingId))
+                .select();
 
-        if (error) throw error;
+            if (error) throw error;
 
-        addForm.reset();
+            if (!data || data.length === 0) {
+                // Alerta por si falta la política RLS de UPDATE
+                alert("Atención: Para poder editar perfumes en Supabase, debes ingresar a Supabase > SQL Editor y ejecutar:\n\nCREATE POLICY \"Permitir actualizar\" ON productos FOR UPDATE USING (true) WITH CHECK (true);");
+                return;
+            }
+
+            alert("¡Perfume modificado exitosamente!");
+            cancelEdit();
+        } else {
+            // MODO CREACIÓN
+            const { error } = await supabaseClient
+                .from('productos')
+                .insert([prodData]);
+
+            if (error) throw error;
+
+            addForm.reset();
+            alert("¡Perfume guardado con éxito en Supabase y visible en la tienda!");
+        }
+
         await loadAdminProducts();
-        alert("¡Perfume guardado con éxito en Supabase y visible en la tienda!");
     } catch (e) {
-        alert("Error al guardar: " + e.message);
+        alert("Error en la operación: " + e.message);
     } finally {
         btnSubmit.disabled = false;
-        btnSubmit.textContent = "➕ Añadir Perfume a la Tienda";
+        if (!editProductId.value) {
+            btnSubmit.textContent = "➕ Añadir Perfume a la Tienda";
+        } else {
+            btnSubmit.textContent = "💾 Guardar Cambios";
+        }
     }
 });
 
