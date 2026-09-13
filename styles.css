@@ -4,21 +4,32 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Lato', sans-serif;
-    background-color: #faf9f6; /* Crema muy claro */
+    background-color: #faf9f6; /* Crema marfil de lujo */
     color: #2c2c2c;
 }
 
-h1, h2, h3, .logo p {
+h1, h2, h3, .logo p, .hero-tag, .hero-content h2 {
     font-family: 'Playfair Display', serif;
 }
 
+/* ==========================================================================
+   Header & Navegación
+   ========================================================================== */
 header {
     background-color: #ffffff;
     color: #1a1a1a;
-    padding: 25px 0;
+    padding: 20px 0;
     border-bottom: 1px solid #eaeaea;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
 
 .header-container {
@@ -38,11 +49,11 @@ header {
 }
 
 .logo h1 span {
-    color: #d4af37; /* Dorado elegante */
+    color: #d4af37; /* Dorado noble */
 }
 
 .logo p {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #7f8c8d;
     font-style: italic;
     letter-spacing: 1px;
@@ -57,15 +68,15 @@ header {
 .header-whatsapp {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     background: #fdfaf3;
     border: 1px solid #d4af37;
     color: #1a1a1a;
-    padding: 10px 16px;
-    border-radius: 25px;
+    padding: 10px 18px;
+    border-radius: 30px;
     text-decoration: none;
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 700;
     transition: all 0.3s ease;
 }
 
@@ -74,81 +85,267 @@ header {
     color: white;
 }
 
-.floating-whatsapp {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    width: 60px;
-    height: 60px;
-    background-color: #25d366;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-    text-decoration: none;
-    z-index: 1000;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.header-whatsapp:hover svg {
+    fill: white;
 }
 
-.floating-whatsapp:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+/* ==========================================================================
+   Hero Banner / Portada
+   ========================================================================== */
+.hero-banner {
+    background: linear-gradient(135deg, #1f1f1f 0%, #2c2c2c 100%);
+    color: white;
+    padding: 70px 20px;
+    text-align: center;
+    position: relative;
+    border-bottom: 3px solid #d4af37;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-tag {
+    display: inline-block;
+    color: #d4af37;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.hero-content h2 {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    letter-spacing: 1px;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.hero-features {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 35px;
+}
+
+.feature-item {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #eee;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-hero {
+    display: inline-block;
+    background: #d4af37;
+    color: #1a1a1a;
+    padding: 14px 32px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+}
+
+.btn-hero:hover {
+    background: white;
+    color: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+}
+
+/* ==========================================================================
+   Sección Principal y Filtros
+   ========================================================================== */
+main {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    min-height: 60vh;
+}
+
+.filter-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.category-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: white;
+    border: 1px solid #ddd;
+    color: #444;
+    padding: 9px 18px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.25s ease;
+}
+
+.filter-btn:hover {
+    border-color: #d4af37;
+    color: #1a1a1a;
+}
+
+.filter-btn.active {
+    background: #1a1a1a;
+    color: #d4af37;
+    border-color: #1a1a1a;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .search-bar input {
-    padding: 12px 20px;
-    border: 1px solid #dcdcdc;
-    background-color: #fcfcfc;
+    padding: 11px 20px;
+    border: 1px solid #ddd;
+    background-color: white;
     border-radius: 30px;
-    width: 250px;
+    width: 280px;
     outline: none;
     font-family: inherit;
+    font-size: 0.9rem;
     transition: all 0.3s;
 }
 
 .search-bar input:focus {
     border-color: #d4af37;
-    box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
 }
 
-main {
-    max-width: 1200px;
-    margin: 50px auto;
-    padding: 0 20px;
-    min-height: 60vh;
-}
-
+/* ==========================================================================
+   Catálogo de Perfumes
+   ========================================================================== */
 .catalog {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 40px;
+    gap: 35px;
 }
 
 .product-card {
     background: white;
-    border: 1px solid #f0f0f0;
-    transition: all 0.4s ease;
+    border: 1px solid #ececec;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.35s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .product-card:hover {
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    transform: translateY(-6px);
+}
+
+.product-img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+    background-color: #f7f7f7;
 }
 
 .product-image {
     width: 100%;
-    height: 320px;
+    height: 100%;
     object-fit: cover;
-    border-bottom: 1px solid #f0f0f0;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.04);
+}
+
+/* Etiquetas flotantes en la imagen */
+.card-badge-tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #1a1a1a;
+    color: #d4af37;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.card-cat-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #333;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+/* Estado de Agotado */
+.product-card.is-out-of-stock .product-image {
+    filter: grayscale(40%) opacity(75%);
+}
+
+.sold-out-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(192, 57, 43, 0.92);
+    color: white;
+    font-weight: bold;
+    font-size: 0.95rem;
+    padding: 8px 24px;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    z-index: 3;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.price-dimmed {
+    color: #888 !important;
+    text-decoration: line-through;
 }
 
 .product-info {
-    padding: 25px 20px;
+    padding: 22px 20px;
     text-align: center;
     flex-grow: 1;
     display: flex;
@@ -156,35 +353,36 @@ main {
 }
 
 .product-title {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     color: #1a1a1a;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
 .product-desc {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: #666;
-    margin-bottom: 20px;
-    line-height: 1.6;
+    margin-bottom: 18px;
+    line-height: 1.5;
     flex-grow: 1;
 }
 
 .product-price {
-    font-size: 1.4rem;
-    font-weight: 400;
+    font-size: 1.35rem;
+    font-weight: 600;
     color: #d4af37;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
+/* Botones WhatsApp */
 .btn-comprar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     width: 100%;
-    padding: 13px 10px;
+    padding: 13px 12px;
     background-color: #1a1a1a;
     color: white;
     text-align: center;
@@ -209,9 +407,41 @@ main {
 
 .btn-comprar:hover svg {
     fill: white;
-    transform: scale(1.15);
+    transform: scale(1.12);
 }
 
+.btn-reposicion {
+    background-color: #4a4a4a;
+}
+.btn-reposicion:hover {
+    background-color: #e67e22;
+}
+
+/* Botón flotante */
+.floating-whatsapp {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    text-decoration: none;
+    z-index: 1000;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floating-whatsapp:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+}
+
+/* Pie de Página */
 footer {
     text-align: center;
     padding: 40px 20px;
@@ -219,105 +449,91 @@ footer {
     color: #888;
     margin-top: auto;
     font-size: 0.9rem;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
 /* ==========================================================================
-   Responsividad para Teléfonos y Pantallas Pequeñas (Mobile First)
+   Responsividad Móvil (Smartphones & Tablets)
    ========================================================================== */
 @media (max-width: 768px) {
     header {
-        padding: 18px 0;
+        padding: 16px 0;
     }
 
     .header-container {
         flex-direction: column;
-        gap: 16px;
+        gap: 14px;
         text-align: center;
-        padding: 0 15px;
     }
 
     .logo h1 {
-        font-size: 1.7rem;
-        letter-spacing: 1px;
+        font-size: 1.6rem;
     }
 
     .header-right {
-        flex-direction: column;
         width: 100%;
-        gap: 12px;
+        justify-content: center;
     }
 
     .header-whatsapp {
         width: 100%;
         justify-content: center;
-        padding: 12px 18px;
-        font-size: 0.95rem;
+        padding: 11px 16px;
     }
 
-    .search-bar {
-        width: 100%;
+    .hero-banner {
+        padding: 45px 15px;
+    }
+
+    .hero-content h2 {
+        font-size: 2.1rem;
+    }
+
+    .hero-features {
+        gap: 10px;
+    }
+
+    .feature-item {
+        font-size: 0.82rem;
+        padding: 6px 14px;
+    }
+
+    .filter-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .category-filters {
+        justify-content: center;
+    }
+
+    .filter-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
     }
 
     .search-bar input {
         width: 100%;
-        padding: 12px 18px;
-        font-size: 0.95rem;
-    }
-
-    main {
-        margin: 30px auto;
-        padding: 0 15px;
     }
 
     .catalog {
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 24px;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
     }
 
-    .product-card {
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .product-image {
-        height: 290px;
-    }
-
-    .product-info {
-        padding: 20px 15px;
-    }
-
-    .product-title {
-        font-size: 1.15rem;
-    }
-
-    .product-desc {
-        font-size: 0.85rem;
-        margin-bottom: 15px;
-    }
-
-    .product-price {
-        font-size: 1.3rem;
-        margin-bottom: 15px;
-    }
-
-    .floating-whatsapp {
-        bottom: 20px;
-        right: 20px;
-        width: 55px;
-        height: 55px;
+    .product-img-wrapper {
+        height: 280px;
     }
 }
 
 @media (max-width: 480px) {
     .catalog {
-        grid-template-columns: 1fr; /* 1 sola columna perfecta en pantallas chicas */
-        gap: 20px;
+        grid-template-columns: 1fr; /* 1 columna completa en celulares */
     }
 
-    .product-image {
-        height: 320px;
+    .product-img-wrapper {
+        height: 310px;
     }
 
     .btn-comprar {

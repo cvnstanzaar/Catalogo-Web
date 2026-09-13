@@ -8,59 +8,278 @@
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Lato', sans-serif; background-color: #faf9f6; margin: 0; padding: 30px 15px; color: #2c2c2c; }
-        .admin-container { max-width: 950px; margin: 0 auto; background: white; padding: 35px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #eaeaea; }
-        h1 { font-family: 'Playfair Display', serif; border-bottom: 2px solid #d4af37; padding-bottom: 12px; margin-top: 0; color: #1a1a1a; letter-spacing: 1px; }
-        .status-badge { display: inline-flex; align-items: center; background: #e8f5e9; color: #2e7d32; font-size: 0.85rem; font-weight: bold; padding: 6px 12px; border-radius: 20px; margin-bottom: 20px; }
+        
+        /* Login Screen */
+        .login-wrapper {
+            max-width: 420px;
+            margin: 80px auto;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #eaeaea;
+            text-align: center;
+        }
+        .login-wrapper h2 {
+            font-family: 'Playfair Display', serif;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            font-size: 1.8rem;
+        }
+        .login-wrapper p {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+        .login-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 18px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .login-input:focus {
+            border-color: #d4af37;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-login:hover {
+            background: #d4af37;
+        }
+        .login-error {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* Admin Container */
+        .admin-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid #eaeaea;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        h1 { font-family: 'Playfair Display', serif; margin: 0; color: #1a1a1a; letter-spacing: 1px; }
+        
+        .status-badge { display: inline-flex; align-items: center; background: #e8f5e9; color: #2e7d32; font-size: 0.85rem; font-weight: bold; padding: 6px 14px; border-radius: 20px; }
         .status-badge span { width: 8px; height: 8px; background: #2e7d32; border-radius: 50%; display: inline-block; margin-right: 8px; }
         
-        .info-card { background: #fffdfa; border: 1px solid #f0e6d2; padding: 15px; border-radius: 6px; margin-bottom: 25px; font-size: 0.95rem; color: #555; }
+        .btn-logout {
+            background: #f8f9fa;
+            color: #777;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-logout:hover {
+            background: #c0392b;
+            color: white;
+            border-color: #c0392b;
+        }
+
+        .info-card { background: #fffdfa; border: 1px solid #f0e6d2; padding: 14px 18px; border-radius: 6px; margin-bottom: 25px; font-size: 0.9rem; color: #555; }
         .info-card strong { color: #1a1a1a; }
 
-        .product-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #fafafa; padding: 25px; border: 1px solid #eaeaea; margin-bottom: 30px; border-radius: 6px; }
-        .product-form .full-width { grid-column: span 2; }
-        .product-form label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; }
-        .product-form input, .product-form textarea { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 0.95rem; }
-        .product-form input:focus, .product-form textarea:focus { border-color: #d4af37; outline: none; }
-        
-        button.btn-add { grid-column: span 2; background: #1a1a1a; color: white; border: none; padding: 14px; cursor: pointer; border-radius: 4px; font-size: 1rem; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; transition: background 0.3s; }
+        /* Form */
+        .product-form {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            background: #fafafa;
+            padding: 25px;
+            border: 1px solid #eaeaea;
+            margin-bottom: 35px;
+            border-radius: 8px;
+        }
+        .product-form .full-width { grid-column: span 3; }
+        .product-form .col-2 { grid-column: span 2; }
+        .product-form label { display: block; font-size: 0.82rem; font-weight: bold; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; }
+        .product-form input, .product-form select, .product-form textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: white;
+        }
+        .product-form input:focus, .product-form select:focus, .product-form textarea:focus {
+            border-color: #d4af37;
+            outline: none;
+        }
+
+        /* Upload Area */
+        .upload-box {
+            border: 2px dashed #d4af37;
+            background: #fffdf9;
+            padding: 16px;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .upload-box:hover {
+            background: #fdf6e6;
+        }
+        .upload-box input[type="file"] {
+            display: none;
+        }
+        .upload-label {
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #777;
+            display: block;
+        }
+        .upload-label strong {
+            color: #d4af37;
+            text-decoration: underline;
+        }
+        .preview-img {
+            max-height: 100px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+            border: 1px solid #ddd;
+        }
+        .upload-progress {
+            font-size: 0.85rem;
+            color: #27ae60;
+            margin-top: 6px;
+            display: none;
+            font-weight: bold;
+        }
+
+        button.btn-add {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: background 0.3s;
+        }
         button.btn-add:hover { background: #d4af37; }
         button.btn-add:disabled { background: #999; cursor: not-allowed; }
 
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            transition: background 0.2s;
+        }
+        .btn-cancel:hover { background: #5a6268; }
+
+        /* Table */
         .table-responsive { overflow-x: auto; margin-top: 15px; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.95rem; }
+        th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.95rem; vertical-align: middle; }
         th { background-color: #f8f8f8; font-family: 'Playfair Display', serif; color: #1a1a1a; font-size: 1rem; }
-        .thumb-img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; vertical-align: middle; }
+        .thumb-img { width: 55px; height: 55px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; vertical-align: middle; }
         
+        .badge-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+        .badge-cat { background: #eef2f5; color: #334e68; }
+        .badge-stock-in { background: #e8f5e9; color: #2e7d32; }
+        .badge-stock-out { background: #ffebee; color: #c62828; }
+        .badge-highlight { background: #fff8e1; color: #b78103; border: 1px solid #ffe082; }
+
+        .action-buttons { display: flex; gap: 8px; align-items: center; }
         .btn-edit { background: #d4af37; color: white; border: none; padding: 7px 12px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; font-weight: 600; transition: background 0.2s; }
         .btn-edit:hover { background: #b89728; }
-
         .btn-delete { background: #c0392b; color: white; border: none; padding: 7px 12px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; font-weight: 600; transition: background 0.2s; }
         .btn-delete:hover { background: #962d22; }
-        
-        .action-buttons { display: flex; gap: 8px; align-items: center; }
-
-        .btn-cancel { background: #6c757d; color: white; border: none; padding: 14px 20px; cursor: pointer; border-radius: 4px; font-size: 0.95rem; font-weight: bold; letter-spacing: 0.5px; transition: background 0.2s; }
-        .btn-cancel:hover { background: #5a6268; }
 
         .link-store { display: inline-block; margin-top: 25px; color: #d4af37; text-decoration: none; font-weight: bold; font-size: 0.95rem; }
         .link-store:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .product-form { grid-template-columns: 1fr; }
+            .product-form .full-width, .product-form .col-2 { grid-column: span 1; }
+            .admin-header { flex-direction: column; text-align: center; }
+        }
     </style>
 </head>
 <body>
 
-<div class="admin-container">
-    <div class="status-badge"><span></span> Base de Datos Conectada (Supabase en Vivo)</div>
-    <h1>Administración de Perfumes</h1>
+<!-- Pantalla de Login -->
+<div class="login-wrapper" id="loginGate">
+    <div style="font-size: 40px; margin-bottom: 10px;">🔐</div>
+    <h2>Acceso Administrativo</h2>
+    <p>Ingresa la clave para gestionar perfumes y stock</p>
+    <form id="loginForm">
+        <input type="password" id="adminPassword" class="login-input" placeholder="Contraseña de acceso" required autofocus>
+        <button type="submit" class="btn-login">Ingresar al Panel</button>
+        <div id="loginError" class="login-error">⚠️ Contraseña incorrecta. Inténtalo de nuevo.</div>
+    </form>
+</div>
+
+<!-- Panel de Administración -->
+<div class="admin-container" id="adminPanel" style="display: none;">
+    <div class="admin-header">
+        <div>
+            <div class="status-badge"><span></span> Supabase en Vivo (Cloud)</div>
+            <h1>Administración de Perfumes</h1>
+        </div>
+        <button class="btn-logout" onclick="logoutAdmin()">🚪 Cerrar Sesión</button>
+    </div>
     
     <div class="info-card">
-        <strong>⚡ Sincronización en Tiempo Real:</strong> Todos los cambios que realices aquí (agregar, editar o eliminar) se guardan al instante en tu base de datos Supabase en la nube. ¡Tu tienda se actualiza de inmediato!
+        <strong>⚡ Sincronización Inmediata:</strong> Cualquier cambio en fotos, precios, etiquetas, categorías o stock se actualiza en vivo para todos tus clientes en la tienda.
     </div>
 
     <form class="product-form" id="addForm">
         <input type="hidden" id="editProductId" value="">
-        <h3 id="formTitle" style="font-family:'Playfair Display',serif;grid-column:span 2;margin:0 0 5px 0;color:#1a1a1a;">➕ Añadir Nuevo Perfume</h3>
-        <div>
+        <h3 id="formTitle" style="font-family:'Playfair Display',serif;grid-column:span 3;margin:0 0 5px 0;color:#1a1a1a;">➕ Añadir Nuevo Perfume</h3>
+        
+        <div class="col-2">
             <label for="pNombre">Nombre del Perfume</label>
             <input type="text" id="pNombre" placeholder="Ej: Dior Sauvage Eau de Parfum" required>
         </div>
@@ -68,15 +287,58 @@
             <label for="pPrecio">Precio (CLP)</label>
             <input type="number" id="pPrecio" placeholder="Ej: 99990" required>
         </div>
-        <div class="full-width">
-            <label for="pImagen">URL de la Imagen</label>
-            <input type="url" id="pImagen" placeholder="Ej: https://images.unsplash.com/..." required>
+
+        <div>
+            <label for="pCategoria">Categoría / Género</label>
+            <select id="pCategoria" required>
+                <option value="Mujer">Femenino (Mujer)</option>
+                <option value="Hombre">Masculino (Hombre)</option>
+                <option value="Unisex" selected>Unisex</option>
+                <option value="Árabe">Árabe & Exclusivo</option>
+            </select>
         </div>
+
+        <div>
+            <label for="pBadge">Etiqueta Destacada</label>
+            <select id="pBadge">
+                <option value="">(Ninguna)</option>
+                <option value="🔥 Más Vendido">🔥 Más Vendido</option>
+                <option value="✨ Nuevo Ingreso">✨ Nuevo Ingreso</option>
+                <option value="🏷️ Oferta Especial">🏷️ Oferta Especial</option>
+                <option value="💎 Exclusivo">💎 Exclusivo</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="pStock">Disponibilidad (Stock)</label>
+            <select id="pStock" required>
+                <option value="true" selected>✅ En Stock (Disponible)</option>
+                <option value="false">❌ Agotado (Temporalmente)</option>
+            </select>
+        </div>
+
+        <!-- Subida de Foto -->
+        <div class="full-width">
+            <label>Fotografía del Perfume</label>
+            <div class="upload-box" onclick="document.getElementById('pImagenFile').click()">
+                <input type="file" id="pImagenFile" accept="image/*" onchange="handleFileUpload(event)">
+                <span class="upload-label" id="uploadLabelText">
+                    📷 <strong>Haz clic aquí para seleccionar foto</strong> desde tu teléfono o computadora
+                </span>
+                <div class="upload-progress" id="uploadProgress">⏳ Subiendo imagen a Supabase Storage...</div>
+                <img id="previewImg" class="preview-img" alt="Vista previa">
+            </div>
+            <div style="margin-top: 8px;">
+                <input type="url" id="pImagen" placeholder="O pega un enlace de imagen externo (https://...)" required>
+            </div>
+        </div>
+
         <div class="full-width">
             <label for="pDesc">Descripción / Notas Olfativas</label>
-            <textarea id="pDesc" placeholder="Descripción detallada de la fragancia..." rows="3" required></textarea>
+            <textarea id="pDesc" placeholder="Detalla las notas de salida, corazón y fondo..." rows="3" required></textarea>
         </div>
-        <div class="full-width" style="display:flex;gap:10px;">
+
+        <div class="full-width" style="display:flex;gap:12px;">
             <button type="submit" id="btnSubmit" class="btn-add" style="flex:1;">➕ Añadir Perfume a la Tienda</button>
             <button type="button" id="btnCancelEdit" class="btn-cancel" style="display:none;" onclick="cancelEdit()">❌ Cancelar</button>
         </div>
@@ -88,13 +350,14 @@
             <thead>
                 <tr>
                     <th>Foto</th>
-                    <th>Nombre</th>
+                    <th>Nombre & Categoría</th>
+                    <th>Stock</th>
                     <th>Precio</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <tr><td colspan="4" style="text-align:center;color:#888;">Cargando inventario...</td></tr>
+                <tr><td colspan="5" style="text-align:center;color:#888;">Cargando inventario...</td></tr>
             </tbody>
         </table>
     </div>
