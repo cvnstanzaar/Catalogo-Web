@@ -133,6 +133,51 @@ header {
     transform: translateY(-2px);
 }
 
+.header-tiktok {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #111111;
+    color: #1a1a1a;
+    padding: 10px 18px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.header-tiktok svg {
+    fill: #111111;
+    transition: fill 0.3s ease;
+}
+
+.header-tiktok:hover {
+    background: #000000;
+    color: white;
+    border-color: #00f2fe;
+    box-shadow: 0 4px 12px rgba(0, 242, 254, 0.3);
+}
+
+.header-tiktok:hover svg {
+    fill: #00f2fe;
+}
+
+.feature-tt {
+    background: rgba(0, 242, 254, 0.12) !important;
+    border-color: rgba(0, 242, 254, 0.4) !important;
+    color: #d0faff !important;
+    transition: all 0.3s ease;
+}
+
+.feature-tt:hover {
+    background: rgba(0, 242, 254, 0.25) !important;
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+
 /* ==========================================================================
    Hero Banner / Portada
    ========================================================================== */
@@ -522,7 +567,8 @@ footer {
     }
 
     .header-whatsapp,
-    .header-instagram {
+    .header-instagram,
+    .header-tiktok {
         width: 100%;
         justify-content: center;
         padding: 11px 16px;
