@@ -1,0 +1,7 @@
+# robots.txt para CV ESSENCE
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+# Sitemap oficial para Google y buscadores
+Sitemap: https://cvnstanzaar.github.io/Catalogo-Web/sitemap.xml
