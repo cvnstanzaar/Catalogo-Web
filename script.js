@@ -110,7 +110,7 @@ function renderProducts(products) {
 
         if (isAvailable) {
             const mensaje = `Hola! Quisiera consultar por el perfume *${product.nombre}* (Precio: $${Number(product.precio || 0).toLocaleString('es-CL')}). ¿Tienen disponibilidad?`;
-            urlWhatsApp = `https://wa.me/56932600904?text=${encodeURIComponent(mensaje)}`;
+            urlWhatsApp = `https://wa.me/56926167837?text=${encodeURIComponent(mensaje)}`;
             btnContent = `
                 <a href="${urlWhatsApp}" target="_blank" class="btn-comprar">
                     ${WA_SVG}
@@ -119,7 +119,7 @@ function renderProducts(products) {
             `;
         } else {
             const mensajeAgotado = `Hola! Vi que el perfume *${product.nombre}* figura como agotado. ¿Tienen fecha estimada de reposición o encargo?`;
-            urlWhatsApp = `https://wa.me/56932600904?text=${encodeURIComponent(mensajeAgotado)}`;
+            urlWhatsApp = `https://wa.me/56926167837?text=${encodeURIComponent(mensajeAgotado)}`;
             btnContent = `
                 <a href="${urlWhatsApp}" target="_blank" class="btn-comprar btn-reposicion">
                     ${WA_SVG}
